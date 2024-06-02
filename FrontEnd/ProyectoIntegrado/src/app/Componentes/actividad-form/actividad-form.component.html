@@ -1,0 +1,84 @@
+<div class="overlay" [ngClass]="{ 'show': showOverlay, 'hide': !showOverlay }">
+    <div class="pacman"></div>
+</div>
+<div class="d-flex justify-content-center">
+    <div class="card bg-white shadow-lg"
+        style="width: 80%; padding: 20px; background-color: rgba(255, 255, 255, 0.65) !important; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); margin-bottom: 20px;">
+        <div class="d-flex mb-3">
+            <button type="button" class="btn btn-primary me-3" (click)="addActividad()" *ngIf="actividad.id!=0"
+                [disabled]="!camposCompletos()">Editar
+                actividad</button>
+            <button type="button" class="btn btn-primary me-3" (click)="addActividad()" *ngIf="actividad.id==0"
+                [disabled]="!camposCompletos()">Crear
+                actividad</button>
+            <button type="button" class="btn btn-secondary me-3" (click)="cancelar()">Cancelar</button>
+        </div>
+        <div class="card bg-white shadow-lg">
+            <form class="container mt-4" style="padding: 20px;" #actividadForm="ngForm">
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group mb-3">
+                            <label for="nombre" class="form-label">Nombre <strong style="color: red;">*</strong></label>
+                            <input type="text" class="form-control" id="nombre" [(ngModel)]="actividad.nombre"
+                                name="nombre" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="descripcion" class="form-label">Descripción de la actividad <strong
+                                    style="color: red;">*</strong></label>
+                            <textarea class="form-control" id="descripcion" [(ngModel)]="actividad.descripcion"
+                                name="descripcion" style="height: 150px;"></textarea>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group mb-3">
+                            <label for="numParticipantesTotal" class="form-label">Numero de participantes <strong
+                                    style="color: red;">*</strong></label>
+                            <input type="number" class="form-control" id="numParticipantesTotal"
+                                [(ngModel)]="actividad.numParticipantesTotal" name="numParticipantesTotal" required
+                                min="1">
+                            <div *ngIf="actividadForm.controls['numParticipantesTotal']?.invalid && actividadForm.controls['numParticipantesTotal']?.touched"
+                                class="text-danger">
+                                El número de participantes debe ser al menos 1
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="tipoActividad" class="form-label">Tipo de actividad <strong
+                                    style="color: red;">*</strong></label>
+                            <select class="form-select" id="tipoActividad" [(ngModel)]="actividad.idTipoActividad"
+                                name="tipoActividad" onfocus='this.size=6;' onblur='this.size=1;'
+                                onchange='this.size=1; this.blur();' required>
+                                <option value="" disabled selected>Selecciona un tipo de actividad</option>
+                                <option *ngFor="let tipo of listaTiposActividades" [value]="tipo.id">{{ tipo.tipo }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group mb-3">
+                            <label for="fechaInicio" class="form-label">Fecha de inicio <strong
+                                    style="color: red;">*</strong></label>
+                            <input type="datetime-local" class="form-control" id="fechaInicio"
+                                [(ngModel)]="actividad.fechaInicio" name="fechaInicio" [min]="minFechaInicio" required
+                                (select)="onFechaInicioChange($event)">
+                        </div>
+                        <div class="form-group ">
+                            <label for="fechaFin" class="form-label">Fecha de fin <strong
+                                    style="color: red;">*</strong></label>
+                            <input type="datetime-local" class="form-control" id="fechaFin"
+                                [(ngModel)]="actividad.fechaFin" name="fechaFin" [min]="minFechaFin" required
+                                (select)="onFechaFinChange($event)">
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <label for="Ubicación" class="form-label">Selecciona una ubicación en el mapa <strong
+                            style="color: red;">*</strong></label>
+                    <div>
+                        <div id="map" style="height: 400px; width: 100%; border-radius: 5px;" class="card shadow-lg">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

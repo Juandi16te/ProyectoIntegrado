@@ -1,0 +1,8 @@
+span {
+    cursor: pointer;
+    display: inline-block;
+}
+
+svg {
+    margin: 0 2px;
+}

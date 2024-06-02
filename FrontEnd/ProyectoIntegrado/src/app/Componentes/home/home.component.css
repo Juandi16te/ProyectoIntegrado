@@ -1,0 +1,120 @@
+button,
+input,
+select {
+    border-radius: 20px !important;
+}
+
+.view-actividad-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.205);
+    z-index: 9998;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.view-actividad {
+    position: relative;
+    z-index: 9999;
+    background-color: white;
+    padding: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    border: 2px solid #007bff;
+    width: 75%;
+    max-height: 80%;
+    text-align: center;
+    overflow-y: auto;
+    /* Habilita el scroll vertical si el contenido excede la altura máxima */
+}
+
+.card-actividad {
+    border-radius: 50px;
+    margin-left: 5%;
+    margin-right: 5%;
+    overflow: hidden;
+    transition: 0.2s;
+    border: 2px solid #0d6dfd79;
+}
+
+.card-actividad:hover {
+    cursor: pointer;
+    background-color: rgb(245, 245, 245) !important;
+    transition: 0.5s;
+    transform: scale(0.995);
+}
+
+/* Flexbox para el contenido de la tarjeta */
+.card-actividad .contenido {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+/* Estilo para pantalla pequeña */
+@media (max-width: 768px) {
+
+    .card-actividad .contenido,
+    .toolbar-botones {
+        flex-direction: column;
+    }
+
+    .card-actividad .participantes {
+        margin-bottom: 10px;
+    }
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(3, 46, 139, 0.521);
+    z-index: 9999;
+}
+
+.pacman {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 0;
+    height: 0;
+    border-right: 20px solid transparent;
+    border-top: 20px solid #ffffff;
+    border-left: 20px solid #f1f1f1d2;
+    border-bottom: 20px solid #c2c2c2;
+    border-top-left-radius: 60px;
+    border-top-right-radius: 60px;
+    border-bottom-left-radius: 60px;
+    border-bottom-right-radius: 60px;
+    animation: spin 1s linear infinite;
+}
+
+
+.show {
+    display: block;
+}
+
+.hide {
+    display: none;
+}
+
+@keyframes spin {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}

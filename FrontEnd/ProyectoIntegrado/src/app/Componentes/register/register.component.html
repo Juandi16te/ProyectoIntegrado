@@ -1,0 +1,92 @@
+<div class="overlay" [ngClass]="{ 'show': showOverlay, 'hide': !showOverlay }">
+    <div class="pacman"></div>
+</div>
+<div class="page-container">
+    <div class="card bg-white shadow-lg" style="width: 700px;">
+        <h2 class="text-center mt-4">Formulario de registro</h2>
+        <form (ngSubmit)="register()" class="container mt-4" style="padding: 20px;" #registerForm="ngForm">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="nombre" class="form-label">Nombre <strong style="color: red;">*</strong></label>
+                        <input type="text" class="form-control" id="nombre" [(ngModel)]="user.nombre" name="nombre"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="apellidos" class="form-label">Apellidos <strong
+                                style="color: red;">*</strong></label>
+                        <input type="text" class="form-control" id="apellidos" [(ngModel)]="user.apellidos"
+                            name="apellidos" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="foto" class="form-label">Foto de perfil</label>
+                        <input type="file" class="form-control" id="foto" name="foto" (change)="cargarImagen($event)">
+                    </div>
+                    <div *ngIf="imagenSeleccionada">
+                        <div class="mt-3 text-center">
+                            <div class="d-flex justify-content-center">
+                                <div class="foto-container">
+                                    <img [src]="imagenSeleccionada" class="imagen-recortada">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button type="button" class="btn btn-link" (click)="borrarImagen()"
+                                    *ngIf="imagenSeleccionada">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-x-lg" viewBox="0 0 16 16">
+                                        <path
+                                            d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="roles" class="form-label">¿Con qué rol quieres registrarte? <strong
+                                style="color: red;">*</strong></label>
+                        <select class="form-select" id="roles" [(ngModel)]="selectedRole" name="roles" required>
+                            <option value="" disabled>Seleccione un rol</option>
+                            <option value="consumidor">Consumidor</option>
+                            <option value="ofertante">Ofertante</option>
+                            <option value="ambos">Consumidor y ofertante</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="usuario" class="form-label">Nombre de usuario <strong
+                                style="color: red;">*</strong></label>
+                        <input type="text" class="form-control" id="usuario" [(ngModel)]="user.usuario" name="usuario"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email <strong style="color: red;">*</strong></label>
+                        <input type="email" class="form-control" id="email" [(ngModel)]="user.email" name="email"
+                            required email>
+                        <div *ngIf="registerForm.controls['email']?.invalid && registerForm.controls['email']?.touched"
+                            class="text-danger">
+                            El correo debe ser válido.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="contrasena" class="form-label">Contraseña <strong
+                                style="color: red;">*</strong></label>
+                        <input type="password" class="form-control" id="contrasena" [(ngModel)]="user.contrasena"
+                            name="contrasena" required>
+                    </div>
+                    <div class="form-group" *ngIf="selectedRole === 'ofertante' || selectedRole === 'ambos'">
+                        <label for="descripcion" class="form-label">Descripción de ofertante </label>
+                        <textarea class="form-control" id="descripcion" [(ngModel)]="user.descripcion"
+                            name="descripcion"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group text-center">
+                <button type="submit" class="btn btn-primary mt-3"
+                    [disabled]="registerForm.invalid">Registrarse</button>
+            </div>
+        </form>
+        <p class="card-footer text-center mt-4 mb-0">¿Ya tienes una cuenta? <a [routerLink]="['/login']">Inicia sesión
+                aquí</a></p>
+    </div>
+</div>

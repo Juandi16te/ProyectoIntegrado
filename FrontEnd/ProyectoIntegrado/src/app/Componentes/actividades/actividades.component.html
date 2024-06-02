@@ -1,0 +1,88 @@
+<div class="overlay" [ngClass]="{ 'show': showOverlay, 'hide': !showOverlay }">
+    <div class="pacman"></div>
+</div>
+<div class="d-flex justify-content-center">
+    <div class="card bg-white shadow-lg"
+        style="width: 80%; padding: 20px; background-color: rgba(255, 255, 255, 0.80) !important; margin-bottom: 20px;">
+        <div class="mb-3 d-flex toolbar-botones">
+            <div class="form-group me-3 mb-3" *ngIf="isOfertante;">
+                <button type="button" class="btn btn-primary" (click)="addActividad()">Crear actividad</button>
+            </div>
+            <div class="form-group me-3 mb-3">
+                <input type="text" class="form-control" placeholder="Busca una actividad" [(ngModel)]="nombre"
+                    (input)="buscarActividad()">
+            </div>
+            <div class="form-group me-3 mb-3" style="position: relative;">
+                <select class="form-select" id="tipoActividad" name="tipoActividad" onfocus='this.size=6;'
+                    onblur='this.size=1;' onchange='this.size=1; this.blur();' (change)="filtrarTipo($event)">
+                    <option value="0" selected>Selecciona un tipo de actividad</option>
+                    <option *ngFor="let tipo of listaTiposActividades" [value]="tipo.id">{{ tipo.tipo }}</option>
+                </select>
+            </div>
+        </div>
+
+        <h3 class="text-center">Explora las actividades de nuestros ofertantes</h3>
+        <div class=" row">
+            <div *ngFor="let x of getPaginatedActivities()" class="col-md-6 mb-3">
+                <div class="card list-group-item bg-white shadow-sm p-3 mb-3 mt-3 card-actividad"
+                    (click)="entrarActividad(x.id)">
+                    <h5 class="mb-1" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">{{ x.nombre
+                        }}</h5>
+                    <div class="d-flex w-100 justify-content-between flex-wrap">
+                        <small class="participantes mb-1">{{ x.numParticipantes }}/{{ x.numParticipantesTotal }}</small>
+                        <small class="fechas mb-1"
+                            [ngStyle]="{'color': isPastDate(x.fechaInicio)!=false ? 'red' : 'black'}">
+                            {{ x.fechaInicio | date:'HH:mm dd/MM/yyyy' }} - {{ x.fechaFin | date:'HH:mm dd/MM/yyyy' }}
+                        </small>
+                    </div>
+                    <p class="mb-1" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">{{
+                        x.descripcion }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center align-items-center">
+            <button class="btn btn-link" (click)="firstPage()" [disabled]="currentPage === 1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor"
+                    class="bi bi-chevron-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                        d="M11.854 1.146a.5.5 0 0 1 0 .708L5.707 8l6.147 6.146a.5.5 0 0 1-.708.708l-6.5-6.5a.5.5 0 0 1 0-.708l6.5-6.5a.5.5 0 0 1 .708 0z" />
+                </svg>
+            </button>
+            <button class="btn btn-link" (click)="previousPage()" [disabled]="currentPage === 1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-chevron-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                        d="M11.854 1.146a.5.5 0 0 1 0 .708L5.707 8l6.147 6.146a.5.5 0 0 1-.708.708l-6.5-6.5a.5.5 0 0 1 0-.708l6.5-6.5a.5.5 0 0 1 .708 0z" />
+                </svg>
+            </button>
+            <span class="mx-3">{{currentPage}} / {{totalPages()}}</span>
+            <button class="btn btn-link" (click)="nextPage()" [disabled]="currentPage >= totalPages()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-chevron-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                        d="M4.146 1.146a.5.5 0 0 1 .708 0l6.5 6.5a.5.5 0 0 1 0 .708l-6.5 6.5a.5.5 0 1 1-.708-.708L10.293 8 4.146 1.854a.5.5 0 0 1 0-.708z" />
+                </svg>
+            </button>
+            <button class="btn btn-link" (click)="lastPage()" [disabled]="currentPage >= totalPages()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor"
+                    class="bi bi-chevron-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                        d="M4.146 1.146a.5.5 0 0 1 .708 0l6.5 6.5a.5.5 0 0 1 0 .708l-6.5 6.5a.5.5 0 0 1-.708-.708L10.293 8 4.146 1.854a.5.5 0 0 1 0-.708z" />
+                </svg>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="mostrarActividad" class="view-actividad-bg">
+    <div class="view-actividad">
+        <p (click)="salirActividad()" style="text-align: end;"><a class="btn btn-link"><svg
+                    xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg"
+                    viewBox="0 0 16 16">
+                    <path
+                        d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
+                </svg></a></p>
+        <app-actividad-view [id]="this.idActividad"></app-actividad-view>
+    </div>
+</div>

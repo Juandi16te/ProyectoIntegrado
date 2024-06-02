@@ -1,0 +1,186 @@
+<div class="overlay" [ngClass]="{ 'show': showOverlay, 'hide': !showOverlay }">
+    <div class="pacman"></div>
+</div>
+<div class="d-flex justify-content-center">
+    <div class="card bg-white shadow-lg"
+        style="width: 80%; padding: 20px; background-color: rgba(255, 255, 255, 0.80) !important; margin-bottom: 20px;">
+        <div class="card list-group-item bg-white shadow-sm p-3 mb-3"
+            style="border-radius: 50px; border: 2px solid #0d6dfd79;">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h1>¡Bienvenido a PacMan Activities!</h1>
+                </div>
+                <div class="col-md-12 text-center mb-3">
+                    <img src="https://www.icegif.com/wp-content/uploads/2023/08/icegif-217.gif" alt="PacMan"
+                        class="img-fluid mb-3" style="width: 30%; min-width: 240px;">
+                    <img src="https://discourse.disneyheroesgame.com/uploads/default/original/2X/d/dcc380d57cbd82ca0556589d20916c4b610bf672.gif"
+                        alt="PacMan" class="img-fluid" style="width: 21%; min-width: 170px;">
+                </div>
+                <div class="col-md-12 text-center">
+                    <p class="lead">
+                        En <strong>PacMan Activities</strong>, conectamos ofertantes y consumidores de actividades de
+                        todo tipo.
+                        Desde deportes hasta arte, siempre encontrarás algo emocionante para hacer. ¡Atrévete a devorar
+                        todas las actividades
+                        como PacMan devora puntos!
+                    </p>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-md-6 text-center">
+                    <h2>Ofertantes</h2>
+                    <p>¿Tienes una actividad que ofrecer? Publica tus actividades y encuentra participantes interesados.
+                        ¡Sé el
+                        maestro del laberinto y guía a tus participantes hacia la aventura!</p>
+                </div>
+                <div class="col-md-6 text-center">
+                    <h2>Consumidores</h2>
+                    <p>¿Buscas algo que hacer? Explora actividades emocionantes y únete a las que más te gusten.
+                        ¡Persigue tus
+                        intereses como PacMan persigue a los fantasmas!</p>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-md-12 d-flex justify-content-center toolbar-botones mb-3" style="width: 100%;">
+                    <button type="button" class="btn btn-warning mb-3 mx-2" [routerLink]="['/actividades']">Explorar
+                        actividades</button>
+                    <button type="button" class="btn btn-success mb-3 mx-2" (click)="addActividad()"
+                        *ngIf="isOfertante">Publicar
+                        actividad</button>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="isOfertante && listaActividades.length>0">
+            <h3 class="text-center">Actividades que has creado</h3>
+            <div class="row mb-4">
+                <div *ngFor="let x of getPaginatedActivities()" class="col-md-6 mb-3">
+                    <div class="card list-group-item bg-white shadow-sm p-3 mb-3 mt-3 card-actividad"
+                        (click)="entrarActividad(x.id)">
+                        <h5 class="mb-1" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">{{
+                            x.nombre
+                            }}</h5>
+                        <div class="d-flex w-100 justify-content-between flex-wrap">
+                            <small class="participantes mb-1">{{ x.numParticipantes }}/{{ x.numParticipantesTotal
+                                }}</small>
+                            <small class="fechas mb-1"
+                                [ngStyle]="{'color': isPastDate(x.fechaInicio)!=false ? 'red' : 'black'}">
+                                {{ x.fechaInicio | date:'HH:mm dd/MM/yyyy' }} - {{ x.fechaFin | date:'HH:mm dd/MM/yyyy'
+                                }}
+                            </small>
+                        </div>
+                        <p class="mb-1" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">{{
+                            x.descripcion }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center align-items-center">
+                <button class="btn btn-link" (click)="firstPage()" [disabled]="currentPage === 1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor"
+                        class="bi bi-chevron-left" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M11.854 1.146a.5.5 0 0 1 0 .708L5.707 8l6.147 6.146a.5.5 0 0 1-.708.708l-6.5-6.5a.5.5 0 0 1 0-.708l6.5-6.5a.5.5 0 0 1 .708 0z" />
+                    </svg>
+                </button>
+                <button class="btn btn-link" (click)="previousPage()" [disabled]="currentPage === 1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-chevron-left" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M11.854 1.146a.5.5 0 0 1 0 .708L5.707 8l6.147 6.146a.5.5 0 0 1-.708.708l-6.5-6.5a.5.5 0 0 1 0-.708l6.5-6.5a.5.5 0 0 1 .708 0z" />
+                    </svg>
+                </button>
+                <span class="mx-3">{{currentPage}} / {{totalPages()}}</span>
+                <button class="btn btn-link" (click)="nextPage()" [disabled]="currentPage >= totalPages()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-chevron-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M4.146 1.146a.5.5 0 0 1 .708 0l6.5 6.5a.5.5 0 0 1 0 .708l-6.5 6.5a.5.5 0 1 1-.708-.708L10.293 8 4.146 1.854a.5.5 0 0 1 0-.708z" />
+                    </svg>
+                </button>
+                <button class="btn btn-link" (click)="lastPage()" [disabled]="currentPage >= totalPages()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor"
+                        class="bi bi-chevron-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M4.146 1.146a.5.5 0 0 1 .708 0l6.5 6.5a.5.5 0 0 1 0 .708l-6.5 6.5a.5.5 0 0 1-.708-.708L10.293 8 4.146 1.854a.5.5 0 0 1 0-.708z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <h3 *ngIf="isOfertante && listaActividades.length<1" class="text-center">Todavía no has creado ninguna actividad
+            ¿A qué esperas?
+        </h3>
+        <hr *ngIf="isConsumidor && isOfertante">
+        <h3 *ngIf="isConsumidor && listaActividadesConsumidor.length<1" class="text-center">No te has inscrito en
+            ninguna actividad ¡Corre a
+            hacerlo!</h3>
+        <div *ngIf="isConsumidor && listaActividadesConsumidor.length>0">
+            <h3 class="text-center">Actividades en las que te has inscrito</h3>
+            <div class="row">
+                <div *ngFor="let x of getPaginatedActivitiesConsumidor()" class="col-md-6 mb-3">
+                    <div class="card list-group-item bg-white shadow-sm p-3 mb-3 mt-3 card-actividad"
+                        (click)="entrarActividad(x.id)">
+                        <h5 class="mb-1" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">{{
+                            x.nombre
+                            }}</h5>
+                        <div class="d-flex w-100 justify-content-between flex-wrap">
+                            <small class="participantes mb-1">{{ x.numParticipantes }}/{{ x.numParticipantesTotal
+                                }}</small>
+                            <small class="fechas mb-1"
+                                [ngStyle]="{'color': isPastDate(x.fechaInicio)!=false ? 'red' : 'black'}">
+                                {{ x.fechaInicio | date:'HH:mm dd/MM/yyyy' }} - {{ x.fechaFin | date:'HH:mm dd/MM/yyyy'
+                                }}
+                            </small>
+                        </div>
+                        <p class="mb-1" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">{{
+                            x.descripcion }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center align-items-center">
+                <button class="btn btn-link" (click)="firstPageConsumidor()" [disabled]="currentPageConsumidor === 1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor"
+                        class="bi bi-chevron-left" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M11.854 1.146a.5.5 0 0 1 0 .708L5.707 8l6.147 6.146a.5.5 0 0 1-.708.708l-6.5-6.5a.5.5 0 0 1 0-.708l6.5-6.5a.5.5 0 0 1 .708 0z" />
+                    </svg>
+                </button>
+                <button class="btn btn-link" (click)="previousPageConsumidor()"
+                    [disabled]="currentPageConsumidor === 1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-chevron-left" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M11.854 1.146a.5.5 0 0 1 0 .708L5.707 8l6.147 6.146a.5.5 0 0 1-.708.708l-6.5-6.5a.5.5 0 0 1 0-.708l6.5-6.5a.5.5 0 0 1 .708 0z" />
+                    </svg>
+                </button>
+                <span class="mx-3">{{currentPageConsumidor}} / {{totalPagesConsumidor()}}</span>
+                <button class="btn btn-link" (click)="nextPageConsumidor()"
+                    [disabled]="currentPageConsumidor >= totalPagesConsumidor()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-chevron-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M4.146 1.146a.5.5 0 0 1 .708 0l6.5 6.5a.5.5 0 0 1 0 .708l-6.5 6.5a.5.5 0 1 1-.708-.708L10.293 8 4.146 1.854a.5.5 0 0 1 0-.708z" />
+                    </svg>
+                </button>
+                <button class="btn btn-link" (click)="lastPageConsumidor()"
+                    [disabled]="currentPageConsumidor >= totalPagesConsumidor()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor"
+                        class="bi bi-chevron-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M4.146 1.146a.5.5 0 0 1 .708 0l6.5 6.5a.5.5 0 0 1 0 .708l-6.5 6.5a.5.5 0 0 1-.708-.708L10.293 8 4.146 1.854a.5.5 0 0 1 0-.708z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="mostrarActividad" class="view-actividad-bg">
+    <div class="view-actividad">
+        <p (click)="salirActividad()" style="text-align: end;"><a class="btn btn-link"><svg
+                    xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg"
+                    viewBox="0 0 16 16">
+                    <path
+                        d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
+                </svg></a></p>
+        <app-actividad-view [id]="this.idActividad"></app-actividad-view>
+    </div>
+</div>

@@ -1,0 +1,51 @@
+<div class="overlay" [ngClass]="{ 'show': showOverlay, 'hide': !showOverlay }">
+    <div class="pacman"></div>
+</div>
+<div class="d-flex justify-content-center">
+    <div class="card bg-white shadow-lg"
+        style="width: 80%; padding: 20px; background-color: rgba(255, 255, 255, 0.80) !important; margin-bottom: 20px;">
+        <div class="row">
+            <div class="col-md-9 mb-3 d-flex justify-content-center">
+                <div class="card bg-white shadow-lg"
+                    style="min-width: 70%; padding: 30px; background-color: rgb(255, 255, 255) !important;">
+                    <div class="mt-3 mb-3 text-center">
+                        <h5 class="card-title">Perfil de {{ user.usuario }}</h5>
+                        <div class="d-flex justify-content-center"
+                            *ngIf="user.foto!='data:image/jpeg;base64,' || user.foto.length==0">
+                            <div class="foto-container">
+                                <img [src]="user.foto" class="imagen-recortada" />
+                            </div>
+                        </div>
+                        <app-star-rating [rating]="user.valoracion" [puedeValorar]="false"
+                            *ngIf="isOfertante"></app-star-rating>
+                    </div>
+                    <p class="card-text"><strong>Nombre:</strong> {{ user.nombre }}</p>
+                    <p class="card-text"><strong>Apellidos:</strong> {{ user.apellidos }}</p>
+                    <p class="card-text"><strong>Email:</strong> {{ user.email }}</p>
+                    <p class="card-text" *ngIf="isOfertante"><strong>Descripción:</strong> {{ user.descripcion }}</p>
+                    <p class="card-text" *ngIf="isOfertante">Ofertante desde {{
+                        user.fechaCreacionUsuario | date:'dd/MM/yyyy' }}</p>
+                    <p class="card-text" *ngIf="isConsumidor">Consumidor desde {{
+                        fechaCreacionConsumidor | date:'dd/MM/yyyy' }}</p>
+                </div>
+            </div>
+            <div class="col-md-2 d-flex flex-column justify-content-center">
+                <button class="btn btn-primary mb-2" (click)="editarPerfil()">Editar Perfil</button>
+                <button class="btn btn-success mb-2" (click)="hacerseOfertante()"
+                    *ngIf="isConsumidor && !isOfertante">Hacerse
+                    ofertante</button>
+                <button class="btn btn-success mb-2" (click)="hacerseConsumidor()"
+                    *ngIf="isOfertante && !isConsumidor">Hacerse
+                    consumidor</button>
+                <button class="btn btn-secondary mb-2" (click)="dejarOfertante()"
+                    *ngIf="isConsumidor && isOfertante">Dejar
+                    de ser ofertante</button>
+                <button class="btn btn-secondary mb-2" (click)="dejarConsumidor()"
+                    *ngIf="isConsumidor && isOfertante">Dejar
+                    de ser consumidor</button>
+
+                <button class="btn btn-danger" (click)="eliminarPerfil()">Eliminar Perfil</button>
+            </div>
+        </div>
+    </div>
+</div>

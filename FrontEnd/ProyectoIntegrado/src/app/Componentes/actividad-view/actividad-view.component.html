@@ -1,0 +1,77 @@
+<div class="overlay" [ngClass]="{ 'show': showOverlay, 'hide': !showOverlay }">
+    <div class="pacman"></div>
+</div>
+<div class="container" style="padding-left: 10px; padding-right: 10px; margin-bottom: 10px;">
+    <div class="mb-3 d-flex justify-content-center toolbar-botones" *ngIf="isPastDate(actividad.fechaFin) && participa">
+        <div class="form-group me-3 mb-3">
+            <p class="card-text">¡Has participado en esta actividad, ponle una valoración!</p>
+        </div>
+        <div class="form-group me-3 mb-3">
+            <app-star-rating [(rating)]="actividadConsumidor.valoracion" [puedeValorar]="true"
+                (ratingChange)="guardarValoracion($event)"></app-star-rating>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-4 text-center mb-3">
+            <strong>Nombre: </strong>
+            <p class="card-text">{{ actividad.nombre }}</p>
+            <strong>Tipo de actividad: </strong>
+            <p class="card-text">{{ tipoActividad.tipo }}</p>
+        </div>
+        <div class="col-md-4 text-center mb-3">
+            <strong>Participantes: </strong>
+            <p class="card-text">{{ actividad.numParticipantes }}/{{ actividad.numParticipantesTotal }}</p>
+            <strong>Fecha: </strong>
+            <p class="card-text">{{ actividad.fechaInicio | date:'HH:mm dd/MM/yyyy' }} - {{ actividad.fechaFin |
+                date:'HH:mm dd/MM/yyyy' }}</p>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center mb-3">
+            <strong>Descripción: </strong>
+            <p class="card-text" style="text-align: justify;">{{ actividad.descripcion }}</p>
+        </div>
+        <div class="col-md-10 mb-3">
+            <strong>Ubicación: </strong>
+            <div id="map" style="height: 400px; width: 100%; border-radius: 5px; margin: 2px;" class="card shadow-sm">
+            </div>
+        </div>
+        <div class="col-md-8 text-center mb-3">
+            <p class="card-text" *ngIf="actividad.idOfertante!=null">Actividad creada por <a
+                    routerLink="/perfil/{{ofertante.usuario}}">{{ ofertante.usuario }}</a> el día
+                {{ actividad.fechaCreacion |
+                date:'dd/MM/yyyy' }}</p>
+            <p class="card-text" *ngIf="actividad.idOfertante==null">Alguién creó esta actividad el día
+                {{ actividad.fechaCreacion |
+                date:'dd/MM/yyyy' }}</p>
+        </div>
+    </div>
+    <div class="mb-3 d-flex justify-content-center toolbar-botones">
+        <div class="form-group me-3 mb-3">
+            <button type="button" class="btn btn-primary"
+                *ngIf="isOfertante && actividad.idOfertante===idOfertante && !isPastDate(actividad.fechaInicio)"
+                (click)="editarActividad()">Editar</button>
+        </div>
+        <div class="form-group me-3 mb-3">
+            <button type="button" class="btn btn-danger"
+                *ngIf="isOfertante && actividad.idOfertante===idOfertante && !isPastDate(actividad.fechaInicio)"
+                (click)="borrarActividad()">Borrar</button>
+        </div>
+        <div class="form-group me-3 mb-3"
+            *ngIf="!participa && isConsumidor && !isPastDate(actividad.fechaInicio) && actividad.numParticipantes<actividad.numParticipantesTotal">
+            <button type="button" class="btn btn-success" (click)="participarActividad()">Participar</button>
+        </div>
+        <div class="form-group me-3 mb-3" *ngIf="participa && isConsumidor && !isPastDate(actividad.fechaInicio)">
+            <button type="button" class="btn btn-secondary" (click)="dejarActividad()">Dejar de participar</button>
+        </div>
+    </div>
+    <div class="mb-3 d-flex justify-content-center toolbar-botones">
+        <div class="form-group me-3 mb-3" *ngIf="isPastDate(actividad.fechaFin) ">
+            <app-star-rating [(rating)]="actividad.valoracion" [puedeValorar]="false"></app-star-rating>
+        </div>
+        <div class="form-group me-3 mb-3" *ngIf="isPastDate(actividad.fechaInicio)">
+            <p class="card-text" style="color: red;">Esta actividad ya no está disponible</p>
+        </div>
+    </div>
+
+</div>
