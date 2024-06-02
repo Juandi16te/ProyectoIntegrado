@@ -66,7 +66,6 @@ export class PerfilComponent implements OnInit {
             },
             error: (error) => {
               this.showOverlay = false;
-              console.error('Error', error);
               this.router.navigate(['/login']);
             }
           });
@@ -74,7 +73,6 @@ export class PerfilComponent implements OnInit {
       },
       error: (error) => {
         this.showOverlay = false;
-        console.error('Error', error);
         this.router.navigate(['/login']);
       }
     });
@@ -95,7 +93,6 @@ export class PerfilComponent implements OnInit {
             },
             error: (error) => {
               this.showOverlay = false;
-              console.error('Error', error);
               this.router.navigate(['/login']);
             }
           });
@@ -103,7 +100,6 @@ export class PerfilComponent implements OnInit {
       },
       error: (error) => {
         this.showOverlay = false;
-        console.error('Error', error);
         this.router.navigate(['/login']);
       }
     });
@@ -140,7 +136,6 @@ export class PerfilComponent implements OnInit {
       const decodedPayload = atob(payload);
       return JSON.parse(decodedPayload);
     } catch (error) {
-      console.error('Error decoding token', error);
       return null;
     }
   }

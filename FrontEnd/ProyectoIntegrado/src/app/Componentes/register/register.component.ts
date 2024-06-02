@@ -66,7 +66,6 @@ export class RegisterComponent {
           } else if (error.error === "existe email") {
             alert('Ya existe un usuario con ese email 😕');
           } else {
-            console.error('Error registering user', error);
           }
         }
       });
@@ -84,7 +83,6 @@ export class RegisterComponent {
           } else if (error.error === "existe email") {
             alert('Ya existe un usuario con ese email 😕');
           } else {
-            console.error('Error registering user', error);
           }
         }
       });
@@ -102,7 +100,6 @@ export class RegisterComponent {
           } else if (error.error === "existe email") {
             alert('Ya existe un usuario con ese email 😕');
           } else {
-            console.error('Error registering user', error);
           }
         }
       });

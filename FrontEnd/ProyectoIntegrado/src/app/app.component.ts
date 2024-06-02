@@ -32,10 +32,9 @@ export class AppComponent implements OnInit {
 
   checkLoginStatus(): void {
     const token = sessionStorage.getItem('token');
-    console.log('Token:', token); // Log the token
     if (token) {
       const decodedToken: any = this.decodeToken(token);
-      console.log('Decoded Token:', decodedToken); // Log the decoded token
+      //console.log('Decoded Token:', decodedToken); // Log the decoded token
       const currentTime = Math.floor(new Date().getTime() / 1000); // Get current time in seconds
       if (decodedToken.exp && decodedToken.exp > currentTime) {
         this.isLogged = true;
@@ -56,7 +55,6 @@ export class AppComponent implements OnInit {
       const decodedPayload = atob(payload);
       return JSON.parse(decodedPayload);
     } catch (error) {
-      console.error('Error decoding token', error);
       return null;
     }
   }

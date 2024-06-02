@@ -57,7 +57,6 @@ export class MiPerfilComponent {
         },
         error: (error) => {
           this.showOverlay = false;
-          console.error('Error', error);
           this.router.navigate(['/login']);
         }
       });
@@ -75,7 +74,6 @@ export class MiPerfilComponent {
         },
         error: (error) => {
           this.showOverlay = false;
-          console.error('Error', error);
           this.router.navigate(['/login']);
         }
       });
@@ -100,11 +98,9 @@ export class MiPerfilComponent {
       this.ofertanteService.post(this.user).subscribe({
         next: (response) => {
           this.showOverlay = false;
-          console.log('se ha hecho ofertante: ', response);
         },
         error: (error) => {
           this.showOverlay = false;
-          console.error('Error', error);
         }
       });
       alert("Ahora eres ofertante y consumidor 🥳, confirma para volver a iniciar sesión")
@@ -118,11 +114,9 @@ export class MiPerfilComponent {
       this.consumidorService.post(this.user).subscribe({
         next: (response) => {
           this.showOverlay = false;
-          console.log('Se ha hecho consumidor: ', response);
         },
         error: (error) => {
           this.showOverlay = false;
-          console.error('Error', error);
         }
       });
       alert("Ahora eres ofertante y consumidor 🥳, confirma para volver a iniciar sesión")
@@ -136,11 +130,9 @@ export class MiPerfilComponent {
       this.ofertanteService.delete(this.idOfertante).subscribe({
         next: (response) => {
           this.showOverlay = false;
-          console.log('ya no es ofertante: ', response);
         },
         error: (error) => {
           this.showOverlay = false;
-          console.error('Error', error);
         }
       });
       alert("Ahora solo eres consumidor, confirma para volver a iniciar sesión")
@@ -154,11 +146,9 @@ export class MiPerfilComponent {
       this.consumidorService.delete(this.idConsumidor).subscribe({
         next: (response) => {
           this.showOverlay = false;
-          console.log('ya no es consumidor: ', response);
         },
         error: (error) => {
           this.showOverlay = false;
-          console.error('Error', error);
         }
       });
       alert("Ahora solo eres ofertante, confirma para volver a iniciar sesión")
@@ -176,7 +166,6 @@ export class MiPerfilComponent {
           },
           error: (error) => {
             this.showOverlay = false;
-            console.error('Error', error);
           }
         });
       }
@@ -188,7 +177,6 @@ export class MiPerfilComponent {
           },
           error: (error) => {
             this.showOverlay = false;
-            console.error('Error', error);
           }
         });
       }
@@ -226,7 +214,6 @@ export class MiPerfilComponent {
       const decodedPayload = atob(payload);
       return JSON.parse(decodedPayload);
     } catch (error) {
-      console.error('Error decoding token', error);
       return null;
     }
   }

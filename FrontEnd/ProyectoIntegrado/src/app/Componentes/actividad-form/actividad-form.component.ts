@@ -33,6 +33,7 @@ export class ActividadFormComponent implements OnInit, AfterViewInit {
   public listaTiposActividades: any[] = [];
   editando: boolean = false;
   idOfertante: any = 0;
+  idOfertanteLogueado: any = 0;
   idActividad: any = 0;
   minFechaInicio: string = '';
   minFechaFin: string = '';
@@ -60,6 +61,9 @@ export class ActividadFormComponent implements OnInit, AfterViewInit {
     this.cargarActividad();
     this.cargarTiposActividades();
     this.setMinFechaInicio();
+    if (this.idOfertante != this.idOfertanteLogueado) {
+      this.router.navigate(['/login']);
+    }
   }
 
   ngAfterViewInit(): void {
@@ -124,7 +128,7 @@ export class ActividadFormComponent implements OnInit, AfterViewInit {
         },
         error: (error) => {
           this.showOverlay = false;
-          console.error('Error', error);
+          this.router.navigate(['/login']);
         }
       });
     }
@@ -139,7 +143,6 @@ export class ActividadFormComponent implements OnInit, AfterViewInit {
       },
       error: (error) => {
         this.showOverlay = false;
-        console.error('Error', error);
         this.router.navigate(['/login']);
       }
     });
@@ -197,7 +200,6 @@ export class ActividadFormComponent implements OnInit, AfterViewInit {
         },
         error: (error) => {
           this.showOverlay = false;
-          console.error('Error', error);
           this.router.navigate(['/login']);
         }
       });
@@ -216,8 +218,7 @@ export class ActividadFormComponent implements OnInit, AfterViewInit {
       const currentTime = Math.floor(new Date().getTime() / 1000);
       if (decodedToken.exp && decodedToken.exp > currentTime) {
         // El token es válido
-        this.idOfertante = decodedToken.idOfertante;
-        this.actividad.idOfertante = decodedToken.idOfertante
+        this.idOfertanteLogueado = decodedToken.idOfertante
       } else {
         this.authService.logout();
       }
@@ -232,7 +233,6 @@ export class ActividadFormComponent implements OnInit, AfterViewInit {
       const decodedPayload = atob(payload);
       return JSON.parse(decodedPayload);
     } catch (error) {
-      console.error('Error decoding token', error);
       return null;
     }
   }

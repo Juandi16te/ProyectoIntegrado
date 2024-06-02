@@ -91,7 +91,6 @@ export class ActividadViewComponent implements OnInit, AfterViewInit {
     this.actividadService.getById(this.id).subscribe({
       next: (response) => {
         this.showOverlay = false;
-        console.log(response)
         this.actividad = response;
         if (this.actividad.ubicacion) {
           const [lat, lng] = this.actividad.ubicacion.split(',').map(Number);
@@ -103,7 +102,6 @@ export class ActividadViewComponent implements OnInit, AfterViewInit {
       },
       error: (error) => {
         this.showOverlay = false;
-        console.error('Error', error);
         this.router.navigate(['/login']);
       }
     });
@@ -115,7 +113,6 @@ export class ActividadViewComponent implements OnInit, AfterViewInit {
         this.tipoActividad = response;
       },
       error: (error) => {
-        console.error('Error', error);
         this.router.navigate(['/login']);
       }
     });
@@ -128,7 +125,6 @@ export class ActividadViewComponent implements OnInit, AfterViewInit {
           this.ofertante = response;
         },
         error: (error) => {
-          console.error('Error', error);
           this.router.navigate(['/login']);
         }
       });
@@ -147,14 +143,12 @@ export class ActividadViewComponent implements OnInit, AfterViewInit {
               this.actividadConsumidor = response
             },
             error: (error) => {
-              console.error('Error', error);
               this.router.navigate(['/login']);
             }
           });
         }
       },
       error: (error) => {
-        console.error('Error', error);
         this.router.navigate(['/login']);
       }
     });
@@ -169,7 +163,6 @@ export class ActividadViewComponent implements OnInit, AfterViewInit {
       },
       error: (error) => {
         this.showOverlay = false;
-        console.error('Error', error);
         this.router.navigate(['/login']);
       }
     });
@@ -206,7 +199,6 @@ export class ActividadViewComponent implements OnInit, AfterViewInit {
       },
       error: (error) => {
         this.showOverlay = false;
-        console.error('Error', error);
         this.router.navigate(['/login']);
       }
     });
@@ -222,7 +214,6 @@ export class ActividadViewComponent implements OnInit, AfterViewInit {
       },
       error: (error) => {
         this.showOverlay = false;
-        console.error('Error', error);
         this.router.navigate(['/login']);
       }
     });
@@ -263,7 +254,6 @@ export class ActividadViewComponent implements OnInit, AfterViewInit {
       const decodedPayload = atob(payload);
       return JSON.parse(decodedPayload);
     } catch (error) {
-      console.error('Error decoding token', error);
       return null;
     }
   }
@@ -286,7 +276,6 @@ export class ActividadViewComponent implements OnInit, AfterViewInit {
         map: this.map
       });
     }
-    console.log(this.marker)
   }
 
   setMapLocation(lat: number, lng: number): void {

@@ -45,7 +45,6 @@ export class ActividadesComponent {
       },
       error: (error) => {
         this.showOverlay = false;
-        console.error('Error', error);
         this.router.navigate(['/login']);
       }
     });
@@ -56,7 +55,6 @@ export class ActividadesComponent {
         this.listaActividades = response;
       },
       error: (error) => {
-        console.error('Error', error);
         this.router.navigate(['/login']);
       }
     });
@@ -71,7 +69,6 @@ export class ActividadesComponent {
       },
       error: (error) => {
         this.showOverlay = false
-        console.error('Error', error);
         this.router.navigate(['/login']);
       }
     });
@@ -163,7 +160,6 @@ export class ActividadesComponent {
       const decodedPayload = atob(payload);
       return JSON.parse(decodedPayload);
     } catch (error) {
-      console.error('Error decoding token', error);
       return null;
     }
   }

@@ -69,7 +69,6 @@ export class PerfilFormComponent implements OnInit {
         },
         error: (error) => {
           this.showOverlay = false;
-          console.error('Error', error);
         }
       });
     }
@@ -87,7 +86,6 @@ export class PerfilFormComponent implements OnInit {
         },
         error: (error) => {
           this.showOverlay = false;
-          console.error('Error', error);
         }
       });
     }
@@ -115,7 +113,6 @@ export class PerfilFormComponent implements OnInit {
       this.ofertanteService.put(this.user).subscribe({
         next: () => {
           this.showOverlay = false;
-          console.log('Ofertante actualizado correctamente');
           if (this.isConsumidor) {
             this.showOverlay = true;
             this.user.id = this.idConsumidor;
@@ -123,7 +120,6 @@ export class PerfilFormComponent implements OnInit {
               next: () => {
                 this.showOverlay = false;
                 if (this.isOfertante == false) {
-                  console.log('Consumidor actualizado correctamente');
                   this.router.navigate(['/miPerfil']);
                 }
               },
@@ -147,7 +143,6 @@ export class PerfilFormComponent implements OnInit {
         next: () => {
           this.showOverlay = false;
           if (this.isOfertante == false) {
-            console.log('Consumidor actualizado correctamente');
             this.router.navigate(['/miPerfil']);
           }
         },
@@ -184,7 +179,6 @@ export class PerfilFormComponent implements OnInit {
       const decodedPayload = atob(payload);
       return JSON.parse(decodedPayload);
     } catch (error) {
-      console.error('Error decoding token', error);
       return null;
     }
   }
